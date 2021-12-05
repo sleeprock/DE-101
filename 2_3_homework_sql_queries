@@ -1,1 +1,31 @@
+--Total Sales by year
 
+select sum(sales), date_trunc('year', order_date) from orders o group by date_trunc('year', order_date);
+
+select sum(sales), extract (year from order_date) from orders o group by extract (year from order_date) order by 2;
+
+--Total Profit by year
+
+select sum(profit) as profit, extract (year from order_date) from orders o group by extract (year from order_date) order by 2;
+
+--Total Sales And Profit by Year
+
+select date_trunc('year', order_date), sum(sales) as Sales, sum(profit) as profit from orders o group by date_trunc('year', order_date) order by 3;
+
+--Profit Ratio
+
+select sum(sales) as Sales, sum(profit) as Profit, sum(profit)/sum(sales)*100 as "Profit Ratio" from orders o;
+
+--Profit per Order
+
+select distinct order_id, sum(profit) from orders o group by order_id order by 2 desc;
+
+--Sales per Customer
+
+select sum(sales), customer_id, customer_name from orders o 
+group by customer_id, customer_name;
+
+--Avg. Discount
+select concat(
+ROUND(AVG(discount)*100::numeric,2)
+,'%') as Discount from orders o;
